@@ -39,11 +39,11 @@ const loginUser = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      msg: `User not loggedin due to internal server error: ${error.message} `,
+      message: `User not loggedin due to internal server error: ${error.message} `,
     });
   }
 
-  res.json({ msg: "Login API Working" });
+  res.json({ message: "Login API Working" });
 };
 
 // Route for user registration
@@ -56,20 +56,20 @@ const registerUser = async (req, res) => {
     if (existingUser) {
       return res
         .status(409)
-        .json({ success: false, msg: "User already exists" });
+        .json({ success: false, message: "User already exists" });
     }
 
     // validating email format & strong password
     if (!validator.isEmail(email)) {
       return res
         .status(400)
-        .json({ success: false, msg: "Please enter a valid email format" });
+        .json({ success: false, message: "Please enter a valid email format" });
     }
 
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        msg: "Please enter a strong password (more than 8 characters)",
+        message: "Please enter a strong password (more than 8 characters)",
       });
     }
 
@@ -91,12 +91,12 @@ const registerUser = async (req, res) => {
 
     res
       .status(201)
-      .json({ success: true, msg: "User registered successfully", token });
+      .json({ success: true, message: "User registered successfully", token });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      msg: `User not registered due to internal server error: ${error.message} `,
+      message: `User not registered due to internal server error: ${error.message} `,
     });
   }
 };
