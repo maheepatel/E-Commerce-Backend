@@ -50,7 +50,7 @@ const addProduct = async (req, res) => {
 
     res
       .status(200)
-      .json({ success: true, message: "Product added successfully", product });
+      .json({ success: true, message: "Product added successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({

@@ -23,7 +23,7 @@ productRouter.post(
 );
 productRouter.post("/single", singleProduct);
 //we can also use this method using params productRouter.get("/remove/:id", removeProduct);
-productRouter.delete("/remove", adminAuth, removeProduct);
+productRouter.post("/remove", adminAuth, removeProduct);
 productRouter.get("/list", listProducts);
 
 export default productRouter;
