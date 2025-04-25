@@ -1,4 +1,3 @@
-
 // Placing orders using COD(cash on delivery) method
 
 const placeOrder = async (req, res) => {};
@@ -19,3 +18,12 @@ const userOrders = async (req, res) => {};
 
 // Update order status from Admin panel
 const updateStatus = async (req, res) => {};
+
+export {
+  placeOrder,
+  placeOrderStripe,
+  placeOrderRazorpay,
+  allOrders,
+  userOrders,
+  updateStatus,
+};
