@@ -6,14 +6,15 @@ import userModel from "../models/userModel.js";
 const placeOrder = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
-    orderData = {
+
+    const orderData = {
       userId,
       items,
       amount,
       address,
       paymentMethod: "COD",
       payment: false,
-      data: Date.now(),
+      date: Date.now(),
     };
 
     const newOrder = new orderModel(orderData);
@@ -25,12 +26,10 @@ const placeOrder = async (req, res) => {
     res.status(200).json({ success: true, message: "Order Placed" });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: `Order was not placed because of ${error.message}`,
-      });
+    res.status(500).json({
+      success: false,
+      message: `Order was not placed because of ${error.message}`,
+    });
   }
 };
 
