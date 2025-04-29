@@ -42,7 +42,23 @@ const placeOrderStripe = async (req, res) => {};
 const placeOrderRazorpay = async (req, res) => {};
 
 // All orders data for Admin panel
-const allOrders = async (req, res) => {};
+const allOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+
+    res.status(200).json({
+      success: true,
+      message: "Orders fetched successfully",
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: `Unable to fetch orders because of ${error.message}`,
+    });
+  }
+};
 
 // User orders data for Frontend
 const userOrders = async (req, res) => {
