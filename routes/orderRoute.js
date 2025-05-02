@@ -2,6 +2,7 @@ import express from "express";
 import {
   placeOrder,
   placeOrderStripe,
+  verifyStripe,
   placeOrderRazorpay,
   allOrders,
   userOrders,
@@ -23,5 +24,8 @@ orderRouter.post("/razorpay", authUser, placeOrderRazorpay);
 
 // User features
 orderRouter.post("/userorders", authUser, userOrders);
+
+// verify payment
+orderRouter.post("/verifyStripe", authUser, verifyStripe);
 
 export default orderRouter;
