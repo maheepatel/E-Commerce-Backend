@@ -1,6 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from "stripe";
+import razorpay from "razorpay";
 
 // global variables
 const currency = "usd";
@@ -9,6 +10,11 @@ const deliveryCharges = 10;
 // Gateway initialization
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const razorpayInstance = new razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 // Placing orders using COD(cash on delivery) method
 
@@ -132,7 +138,48 @@ const verifyStripe = async (req, res) => {
 
 // Placing orders using Razorpay method
 
-const placeOrderRazorpay = async (req, res) => {};
+const placeOrderRazorpay = async (req, res) => {
+  try {
+    const { userId, items, amount, address } = req.body;
+
+    const orderData = {
+      userId,
+      items,
+      amount,
+      address,
+      paymentMethod: "Razorpay",
+      payment: false,
+      date: Date.now(),
+    };
+
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
+
+    const options = {
+      amount: amount * 100, // amount in smallest currency unit
+      currency: currency.toUpperCase(),
+      receipt: newOrder._id.toString(),
+    };
+
+    await razorpayInstance.orders.create(options, (err, order) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: `Unable to create Razorpay order because of ${err.message}`,
+        });
+      }
+
+      res.status(200).json({ success: true, order });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: `Order was not placed because of ${error.message}`,
+    });
+  }
+};
 
 // All orders data for Admin panel
 const allOrders = async (req, res) => {
